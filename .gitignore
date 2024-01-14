@@ -1,13 +1,2 @@
 .DS_Store
-website/.DS_Store
-website/.hugo_build.lock
-website/archetypes/
-website/assets/
-website/content/
-website/data/
-website/i18n/
-website/layouts/
-website/hugo.toml
-website/.gitmodules
-website/resources/
-website/static/
+website/
