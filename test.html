@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameBoy Advance Startup Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .gba-screen {
+            position: relative;
+            width: 480px;
+            height: 320px;
+            background-color: #000;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .nintendo-logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            color: #ff0000;
+            font-size: 48px;
+            font-weight: bold;
+            opacity: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+        .ping-circle {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 5px;
+            height: 5px;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0;
+        }
+        .gba-text {
+            position: absolute;
+            left: 50%;
+            bottom: 60px;
+            transform: translate(-50%, 0);
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            opacity: 0;
+            width: 100%;
+            text-align: center;
+        }
+        .gba-logo {
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -50%);
+            color: #0066cc;
+            font-size: 36px;
+            font-weight: bold;
+            opacity: 0;
+            letter-spacing: -1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gba-screen">
+        <div class="ping-circle"></div>
+        <div class="nintendo-logo">Nintendo</div>
+        <div class="gba-logo">GAME BOY</div>
+        <div class="gba-text">ADVANCE</div>
+    </div>
+
+    <audio id="gbaSound" preload="auto">
+        <source src="https://vgmsite.com/soundtracks/game-boy-advance-sounds/fivlsjjkvi/02%20-%20Start%20Up%20Sound.mp3" type="audio/mpeg">
+        <!-- Fallback audio URL in case the first one doesn't work -->
+        <source src="https://www.myinstants.com/media/sounds/gba-startup.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const pingCircle = document.querySelector('.ping-circle');
+            const nintendoLogo = document.querySelector('.nintendo-logo');
+            const gbaLogo = document.querySelector('.gba-logo');
+            const gbaText = document.querySelector('.gba-text');
+            const gbaSound = document.getElementById('gbaSound');
+            
+            // Function to play animation
+            function playStartupAnimation() {
+                // Reset to initial state
+                pingCircle.style.opacity = '0';
+                pingCircle.style.width = '5px';
+                pingCircle.style.height = '5px';
+                nintendoLogo.style.opacity = '0';
+                nintendoLogo.style.transform = 'translate(-50%, -50%) scale(0)';
+                gbaLogo.style.opacity = '0';
+                gbaText.style.opacity = '0';
+                
+                // Timeline of animation
+                setTimeout(() => {
+                    // Play the sound
+                    gbaSound.play().catch(e => console.log("Audio playback failed: ", e));
+                    
+                    // Show the ping circle
+                    pingCircle.style.opacity = '1';
+                    
+                    // Animate ping expanding
+                    setTimeout(() => {
+                        pingCircle.style.transition = 'all 0.5s ease-out';
+                        pingCircle.style.width = '100px';
+                        pingCircle.style.height = '100px';
+                        pingCircle.style.opacity = '0';
+                    }, 300);
+                    
+                    // Show Nintendo logo
+                    setTimeout(() => {
+                        nintendoLogo.style.transition = 'all 0.5s ease-out';
+                        nintendoLogo.style.opacity = '1';
+                        nintendoLogo.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 800);
+                    
+                    // Fade out Nintendo logo
+                    setTimeout(() => {
+                        nintendoLogo.style.transition = 'all 0.5s ease-out';
+                        nintendoLogo.style.opacity = '0';
+                    }, 2500);
+                    
+                    // Show GameBoy Advance text
+                    setTimeout(() => {
+                        gbaLogo.style.transition = 'all 0.5s ease-out';
+                        gbaLogo.style.opacity = '1';
+                        
+                        setTimeout(() => {
+                            gbaText.style.transition = 'all 0.5s ease-out';
+                            gbaText.style.opacity = '1';
+                        }, 300);
+                    }, 3200);
+                }, 500);
+            }
+            
+            // Play the animation on load
+            playStartupAnimation();
+            
+            // Click to replay
+            document.querySelector('.gba-screen').addEventListener('click', playStartupAnimation);
+        });
+    </script>
+</body>
+</html>
