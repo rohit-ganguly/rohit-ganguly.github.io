@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Rohit's Blue GBA-SP</title>
+<title>rohit.info</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
 <style>
 /* ===== cobalt-blue GBA-SP palette ===== */
@@ -31,7 +31,7 @@ body.boot,body{             /* boot class removed after flash */
   width:clamp(280px,90vw,360px);
   height:90vh;max-height:640px;
   display:flex;flex-direction:column;
-  padding:1rem .9rem 1.4rem;
+  padding:1.4rem 1rem 1.4rem;
   border-radius:18px;
   background:linear-gradient(150deg,var(--shell-light) 0 35%,var(--shell-dark) 65% 100%);
   box-shadow:0 6px 14px rgba(0,0,0,.45);
@@ -44,8 +44,8 @@ body.boot,body{             /* boot class removed after flash */
   background:var(--bezel);
   border:4px solid #0004;
   border-radius:6px;
-  padding:.22rem;
-  margin-bottom:35px;
+  padding:0.8rem 0.8rem 0.1rem;
+  margin-bottom:20px;
   display:flex;flex-direction:column;
   position:relative;
 }
@@ -54,8 +54,8 @@ body.boot,body{             /* boot class removed after flash */
 .device::before{
     content:'';
     position:absolute;
-    top:calc(1rem - 18px);left:calc(0.9rem - 2.6px);right:calc(0.9rem - 2.6px);
-    height:21px;
+    top:calc(1rem - 14px);left:calc(0.9rem - 2.6px);right:calc(0.9rem - 2.6px);
+    height:24px;
     background:
         radial-gradient(circle at 10.5px 10.5px, #1a2966 6.56px, transparent 6.56px),
         radial-gradient(circle at calc(100% - 10.5px) 10.5px, #1a2966 6.56px, transparent 6.56px);
@@ -68,7 +68,7 @@ body.boot,body{             /* boot class removed after flash */
   content:'';
   position:absolute;
   top:calc(40% + 10px);left:calc(0.9rem - 2.6px);right:calc(0.9rem - 2.6px);
-  height:21px;
+  height:24px;
   background:
     radial-gradient(circle at 10.5px 10.5px, #1a2966 6.56px, transparent 6.56px),
     radial-gradient(circle at calc(100% - 10.5px) 10.5px, #1a2966 6.56px, transparent 6.56px);
@@ -124,7 +124,7 @@ section p{margin-bottom:.6rem;line-height:1.3}
 }
 
 /* ===== BOTTOM – controls ===== */
-.controls{flex:1 1 50%;position:relative}
+.controls{flex:1 1 50%;position:relative;perspective:500px}
 
 /* D-pad with recessed area */
 .dpad{
@@ -136,17 +136,74 @@ section p{margin-bottom:.6rem;line-height:1.3}
   box-shadow:inset 4px 4px 12px rgba(0,0,0,0.6),
              inset -2px -2px 6px rgba(255,255,255,0.2);
   display:flex;align-items:center;justify-content:center;
+  position:relative;
 }
 .dpad::before{
   content:'';
+  position:absolute;
   width:64px;height:64px;
   background:linear-gradient(145deg, #6b6f73, #4a4e52);
   clip-path:polygon(
    37% 0,63% 0,63% 37%,100% 37%,100% 63%,63% 63%,
    63% 100%,37% 100%,37% 63%,0 63%,0 37%,37% 37%);
   box-shadow:inset 2px 2px 4px rgba(255,255,255,0.4),
-             inset -3px -3px 6px rgba(0,0,0,0.8);
+             inset -3px -3px 6px rgba(0,0,0,0.8),
+             0 2px 5px rgba(0,0,0,0.2),
+             0 1px 2px rgba(0,0,0,0.1);
   cursor:pointer;
+  transition:transform 0.1s ease;
+  transform-style:preserve-3d;
+  z-index:1;
+}
+
+/* D-pad directional areas */
+.dpad-up, .dpad-down, .dpad-left, .dpad-right{
+  position:absolute;
+  cursor:pointer;
+  z-index:3;
+}
+.dpad-up{
+  top:13px;left:50%;transform:translateX(-50%);
+  width:26px;height:26px;
+}
+.dpad-down{
+  bottom:13px;left:50%;transform:translateX(-50%);
+  width:26px;height:26px;
+}
+.dpad-left{
+  left:13px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;
+}
+.dpad-right{
+  right:13px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;
+}
+
+/* D-pad press effects */
+.dpad.pressing-up::before{
+  transform:rotateX(14deg);
+  box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5),
+             inset -3px -3px 6px rgba(0,0,0,0.9),
+             0 4px 8px rgba(0,0,0,0.25),
+             0 2px 4px rgba(0,0,0,0.15);
+}
+.dpad.pressing-down::before{
+  transform:rotateX(-14deg);
+  box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5),
+             inset -3px -3px 6px rgba(0,0,0,0.9),
+             0 1px 3px rgba(0,0,0,0.3);
+}
+.dpad.pressing-left::before{
+  transform:rotateY(-12deg);
+  box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5),
+             inset -3px -3px 6px rgba(0,0,0,0.9),
+             3px 2px 6px rgba(0,0,0,0.25);
+}
+.dpad.pressing-right::before{
+  transform:rotateY(16deg);
+  box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5),
+             inset -3px -3px 6px rgba(0,0,0,0.9),
+             -3px 2px 6px rgba(0,0,0,0.25);
 }
 
 /* A/B pill */
@@ -162,9 +219,18 @@ section p{margin-bottom:.6rem;line-height:1.3}
   transform:rotate(15deg);
   width:34px;height:34px;border-radius:50%;border:none;
   background:var(--btn-face);
-  box-shadow:inset 2px 2px 3px rgba(255,255,255,0.3),
-             inset -2px -2px 4px #0008;
+  box-shadow:inset 2px 2px 3px rgba(255,255,255,0.4),
+             inset -2px -2px 4px rgba(0,0,0,0.6),
+             0 3px 6px rgba(0,0,0,0.25),
+             0 1px 2px rgba(0,0,0,0.15);
   font-size:.55rem;font-weight:bold;color:#000;cursor:pointer;
+  transition:all 0.1s ease;
+}
+.ab-btn:active{
+  transform:rotate(15deg) translateY(1px);
+  box-shadow:inset 1px 1px 2px rgba(255,255,255,0.3),
+             inset -3px -3px 5px rgba(0,0,0,0.7),
+             0 1px 3px rgba(0,0,0,0.3);
 }
 
 /* Speaker grille 4×4 */
@@ -175,29 +241,26 @@ section p{margin-bottom:.6rem;line-height:1.3}
   grid-template:repeat(4,4px)/repeat(4,4px);
 }
 .speaker div{
-  width:4px;height:4px;border-radius:50%;background:#1f1f1f;
+  width:4px;height:5px;border-radius:50%;background:#1f1f1f;
 }
 
-/* Power/Volume button */
-.power-btn{
-  position:absolute;right:8px;top:30%;
-  width:8px;height:40px;
-  background:linear-gradient(90deg, #2747a0, #1f3785);
-  border-radius:4px;
-  box-shadow:inset 2px 0 4px rgba(0,0,0,0.6),
-             inset -1px 0 2px rgba(255,255,255,0.1);
+/* Power indicators - two small rectangles */
+.power-indicators{
+  position:absolute;right:-12px;top:5%;
+  display:flex;flex-direction:column;gap:10px;
 }
-.power-btn::before{
-  content:'';
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%, -50%);
-  width:12px;height:44px;
-  background:var(--shell-dark);
-  border-radius:6px;
-  box-shadow:inset 2px 0 6px rgba(0,0,0,0.4),
-             inset -1px 0 3px rgba(255,255,255,0.1);
-  z-index:-1;
+.power-indicator{
+  width:6px;height:12px;
+  background:linear-gradient(90deg, #4b5357, #4b5357);
+  border-radius:1px;
+  box-shadow:inset 1px 0 2px rgba(0,0,0,0.4),
+             inset -1px 0 1px rgba(255,255,255,0.1);
+}
+.power-indicator.on{
+  background:linear-gradient(90deg, #228B22, #32CD32);
+  box-shadow:inset 1px 0 2px rgba(0,0,0,0.4),
+             inset -1px 0 1px rgba(255,255,255,0.2),
+             0 0 3px rgba(50,205,50,0.3);
 }
 
 /* Start / Select with recessed areas */
@@ -223,9 +286,55 @@ section p{margin-bottom:.6rem;line-height:1.3}
 .startselect button{
   width:14px;height:14px;border-radius:50%;border:none;
   background:var(--btn-face);
-  box-shadow:inset 1px 1px 2px rgba(255,255,255,0.3),
-             inset -1px -1px 3px #0007;
+  box-shadow:inset 1px 1px 2px rgba(255,255,255,0.4),
+             inset -1px -1px 3px rgba(0,0,0,0.6),
+             0 2px 4px rgba(0,0,0,0.2),
+             0 1px 1px rgba(0,0,0,0.1);
   cursor:pointer;
+  transition:all 0.1s ease;
+}
+.startselect button:active{
+  transform:translateY(1px);
+  box-shadow:inset 1px 1px 1px rgba(255,255,255,0.3),
+             inset -2px -2px 4px rgba(0,0,0,0.7),
+             0 1px 2px rgba(0,0,0,0.25);
+}
+
+/* Brightness button - centered above start/select */
+.brightness{
+  position:absolute;bottom:85%;left:50%;transform:translateX(-50%);
+  font-size:.32rem;color:#000;text-align:center;
+}
+.brightness > div{
+  position:relative;
+}
+.brightness > div::before{
+  content:'';
+  position:absolute;
+  top:-4px;left:50%;
+  transform:translateX(-50%);
+  width:24px;height:24px;
+  background:var(--shell-dark);
+  border-radius:50%;
+  box-shadow:inset 1px 1px 4px rgba(0,0,0,0.4),
+             inset -1px -1px 2px rgba(255,255,255,0.1);
+  z-index:-1;
+}
+.brightness button{
+  width:14px;height:14px;border-radius:50%;border:none;
+  background:var(--btn-face);
+  box-shadow:inset 1px 1px 2px rgba(255,255,255,0.4),
+             inset -1px -1px 3px rgba(0,0,0,0.6),
+             0 2px 4px rgba(0,0,0,0.2),
+             0 1px 1px rgba(0,0,0,0.1);
+  cursor:pointer;
+  transition:all 0.1s ease;
+}
+.brightness button:active{
+  transform:translateY(1px);
+  box-shadow:inset 1px 1px 1px rgba(255,255,255,0.3),
+             inset -2px -2px 4px rgba(0,0,0,0.7),
+             0 1px 2px rgba(0,0,0,0.25);
 }
 
 /* scale down on squat phones */
@@ -242,7 +351,7 @@ section p{margin-bottom:.6rem;line-height:1.3}
         <div class="lcd-content">
           <h2>ABOUT</h2>
           <section>
-            <p>👋 Hey there! I’m Rohit, a product tinkerer who grew up speed-running Pokémon Emerald and scribbling in PictoChat.</p>
+            <p>Hi! I'm Rohit.</p>
           </section>
         </div>
       </div>
@@ -255,7 +364,12 @@ section p{margin-bottom:.6rem;line-height:1.3}
     <!-- ========== BOTTOM ========== -->
     <div class="controls">
       <!-- D-pad -->
-      <div class="dpad" aria-label="dpad"></div>
+      <div class="dpad" aria-label="dpad">
+        <div class="dpad-up" aria-label="up"></div>
+        <div class="dpad-down" aria-label="down"></div>
+        <div class="dpad-left" aria-label="left"></div>
+        <div class="dpad-right" aria-label="right"></div>
+      </div>
 
       <!-- A / B -->
       <div class="ab-pill">
@@ -263,8 +377,11 @@ section p{margin-bottom:.6rem;line-height:1.3}
         <button class="ab-btn" aria-label="B">B</button>
       </div>
 
-      <!-- Power/Volume button -->
-      <div class="power-btn" aria-label="power button"></div>
+      <!-- Power indicators -->
+      <div class="power-indicators" aria-label="power indicators">
+        <div class="power-indicator on"></div>
+        <div class="power-indicator"></div>
+      </div>
 
       <!-- Speaker grille -->
       <div class="speaker" aria-hidden="true">
@@ -273,6 +390,11 @@ section p{margin-bottom:.6rem;line-height:1.3}
         <div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div>
+      </div>
+
+      <!-- Brightness button -->
+      <div class="brightness">
+        <div><button aria-label="brightness"></button><br /></div>
       </div>
 
       <!-- Start / Select -->
@@ -287,6 +409,184 @@ section p{margin-bottom:.6rem;line-height:1.3}
 <script>
 /* remove boot class after flash */
 setTimeout(()=>document.body.classList.remove('boot'),2800);
+
+/* Button press animations and logging */
+document.addEventListener('DOMContentLoaded', function() {
+  // D-pad elements
+  const dpad = document.querySelector('.dpad');
+  const dpadUp = document.querySelector('.dpad-up');
+  const dpadDown = document.querySelector('.dpad-down');
+  const dpadLeft = document.querySelector('.dpad-left');
+  const dpadRight = document.querySelector('.dpad-right');
+
+  // Other button elements
+  const aButton = document.querySelector('.ab-btn[aria-label="A"]');
+  const bButton = document.querySelector('.ab-btn[aria-label="B"]');
+  const startButton = document.querySelector('button[aria-label="start"]');
+  const selectButton = document.querySelector('button[aria-label="select"]');
+  const brightnessButton = document.querySelector('button[aria-label="brightness"]');
+
+  console.log('All button elements found:', { 
+    dpad, dpadUp, dpadDown, dpadLeft, dpadRight,
+    aButton, bButton, startButton, selectButton, brightnessButton 
+  });
+
+  // Add press effects with logging
+  dpadUp.addEventListener('mousedown', (e) => {
+    console.log('Up pressed');
+    dpad.classList.add('pressing-up');
+    e.preventDefault();
+  });
+  dpadUp.addEventListener('mouseup', () => {
+    console.log('Up released');
+    dpad.classList.remove('pressing-up');
+  });
+  dpadUp.addEventListener('mouseleave', () => dpad.classList.remove('pressing-up'));
+
+  dpadDown.addEventListener('mousedown', (e) => {
+    console.log('Down pressed');
+    dpad.classList.add('pressing-down');
+    e.preventDefault();
+  });
+  dpadDown.addEventListener('mouseup', () => {
+    console.log('Down released');
+    dpad.classList.remove('pressing-down');
+  });
+  dpadDown.addEventListener('mouseleave', () => dpad.classList.remove('pressing-down'));
+
+  dpadLeft.addEventListener('mousedown', (e) => {
+    console.log('Left pressed');
+    dpad.classList.add('pressing-left');
+    e.preventDefault();
+  });
+  dpadLeft.addEventListener('mouseup', () => {
+    console.log('Left released');
+    dpad.classList.remove('pressing-left');
+  });
+  dpadLeft.addEventListener('mouseleave', () => dpad.classList.remove('pressing-left'));
+
+  dpadRight.addEventListener('mousedown', (e) => {
+    console.log('Right pressed');
+    dpad.classList.add('pressing-right');
+    e.preventDefault();
+  });
+  dpadRight.addEventListener('mouseup', () => {
+    console.log('Right released');
+    dpad.classList.remove('pressing-right');
+  });
+  dpadRight.addEventListener('mouseleave', () => dpad.classList.remove('pressing-right'));
+
+  // Touch support
+  dpadUp.addEventListener('touchstart', (e) => {
+    console.log('Up touched');
+    dpad.classList.add('pressing-up');
+    e.preventDefault();
+  });
+  dpadUp.addEventListener('touchend', () => {
+    console.log('Up touch ended');
+    dpad.classList.remove('pressing-up');
+  });
+  
+  dpadDown.addEventListener('touchstart', (e) => {
+    console.log('Down touched');
+    dpad.classList.add('pressing-down');
+    e.preventDefault();
+  });
+  dpadDown.addEventListener('touchend', () => {
+    console.log('Down touch ended');
+    dpad.classList.remove('pressing-down');
+  });
+  
+  dpadLeft.addEventListener('touchstart', (e) => {
+    console.log('Left touched');
+    dpad.classList.add('pressing-left');
+    e.preventDefault();
+  });
+  dpadLeft.addEventListener('touchend', () => {
+    console.log('Left touch ended');
+    dpad.classList.remove('pressing-left');
+  });
+  
+  dpadRight.addEventListener('touchstart', (e) => {
+    console.log('Right touched');
+    dpad.classList.add('pressing-right');
+    e.preventDefault();
+  });
+  dpadRight.addEventListener('touchend', () => {
+    console.log('Right touch ended');
+    dpad.classList.remove('pressing-right');
+  });
+
+  // A Button events
+  aButton.addEventListener('mousedown', () => {
+    console.log('A button pressed');
+  });
+  aButton.addEventListener('mouseup', () => {
+    console.log('A button released');
+  });
+  aButton.addEventListener('touchstart', () => {
+    console.log('A button touched');
+  });
+  aButton.addEventListener('touchend', () => {
+    console.log('A button touch ended');
+  });
+
+  // B Button events
+  bButton.addEventListener('mousedown', () => {
+    console.log('B button pressed');
+  });
+  bButton.addEventListener('mouseup', () => {
+    console.log('B button released');
+  });
+  bButton.addEventListener('touchstart', () => {
+    console.log('B button touched');
+  });
+  bButton.addEventListener('touchend', () => {
+    console.log('B button touch ended');
+  });
+
+  // Start Button events
+  startButton.addEventListener('mousedown', () => {
+    console.log('Start button pressed');
+  });
+  startButton.addEventListener('mouseup', () => {
+    console.log('Start button released');
+  });
+  startButton.addEventListener('touchstart', () => {
+    console.log('Start button touched');
+  });
+  startButton.addEventListener('touchend', () => {
+    console.log('Start button touch ended');
+  });
+
+  // Select Button events
+  selectButton.addEventListener('mousedown', () => {
+    console.log('Select button pressed');
+  });
+  selectButton.addEventListener('mouseup', () => {
+    console.log('Select button released');
+  });
+  selectButton.addEventListener('touchstart', () => {
+    console.log('Select button touched');
+  });
+  selectButton.addEventListener('touchend', () => {
+    console.log('Select button touch ended');
+  });
+
+  // Brightness Button events
+  brightnessButton.addEventListener('mousedown', () => {
+    console.log('Brightness button pressed');
+  });
+  brightnessButton.addEventListener('mouseup', () => {
+    console.log('Brightness button released');
+  });
+  brightnessButton.addEventListener('touchstart', () => {
+    console.log('Brightness button touched');
+  });
+  brightnessButton.addEventListener('touchend', () => {
+    console.log('Brightness button touch ended');
+  });
+});
 </script>
 </body>
 </html>
