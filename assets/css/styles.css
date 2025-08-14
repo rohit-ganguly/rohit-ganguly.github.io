@@ -323,7 +323,11 @@ section p {
 }
 
 .detail-body ul {
-  margin: .3rem 0 .3rem 1rem;
+  margin: .3rem 0 .3rem 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 3px;
+  border-radius: 2px;
+  padding-left: 1rem;
 }
 
 .detail-body li {
