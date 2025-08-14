@@ -143,6 +143,24 @@ body.boot,body{             /* boot class removed after flash */
   position: relative;
 }
 
+/* Fade overlay for navigation transitions */
+.fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.fade-overlay.fade-in {
+  opacity: 1;
+}
+
 .game-content {
   flex: 1;
   padding: .6rem;

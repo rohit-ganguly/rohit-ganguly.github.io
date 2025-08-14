@@ -36,6 +36,25 @@ document.addEventListener('DOMContentLoaded', function() {
   let menuPointer = null;
   let detailPointer = null;
   let gameContainer = null;
+  let fadeOverlay = null;
+
+  // Fade transition functions
+  function fadeToBlack(callback) {
+    if (!fadeOverlay) fadeOverlay = document.getElementById('fadeOverlay');
+    if (!fadeOverlay) return;
+
+    fadeOverlay.classList.add('fade-in');
+    
+    // Execute callback when screen is fully black
+    setTimeout(() => {
+      if (callback) callback();
+      
+      // Fade back in after content has changed
+      setTimeout(() => {
+        fadeOverlay.classList.remove('fade-in');
+      }, 50); // Small delay to ensure content is rendered
+    }, 300); // Wait for full fade to black
+  }
 
   function initializeMenu() {
     // Get menu elements
@@ -263,40 +282,44 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function showDetailView(section) {
-    isDetailView = true;
-    gameContainer.classList.add('detail-mode');
-    
-    // Hide all detail views first
-    const detailViews = document.querySelectorAll('.detail-view');
-    detailViews.forEach(view => view.classList.remove('active'));
-    
-    // Show the selected detail view
-    const targetDetail = document.getElementById(`${section}-detail`);
-    if (targetDetail) {
-      targetDetail.classList.add('active');
-      // Initialize interactive elements for this detail view
-      initializeDetailInteractiveElements(targetDetail);
-    }
-    
-    console.log('Showing detail view for:', section);
+    fadeToBlack(() => {
+      isDetailView = true;
+      gameContainer.classList.add('detail-mode');
+      
+      // Hide all detail views first
+      const detailViews = document.querySelectorAll('.detail-view');
+      detailViews.forEach(view => view.classList.remove('active'));
+      
+      // Show the selected detail view
+      const targetDetail = document.getElementById(`${section}-detail`);
+      if (targetDetail) {
+        targetDetail.classList.add('active');
+        // Initialize interactive elements for this detail view
+        initializeDetailInteractiveElements(targetDetail);
+      }
+      
+      console.log('Showing detail view for:', section);
+    });
   }
 
   function hideDetailView() {
     if (!isDetailView) return;
     
-    isDetailView = false;
-    gameContainer.classList.remove('detail-mode');
-    
-    // Hide all detail views
-    const detailViews = document.querySelectorAll('.detail-view');
-    detailViews.forEach(view => view.classList.remove('active'));
-    
-    // Clear detail interactive elements
-    detailInteractiveElements.forEach(el => el.classList.remove('active'));
-    detailInteractiveElements = [];
-    currentDetailIndex = 0;
-    
-    console.log('Returning to main menu');
+    fadeToBlack(() => {
+      isDetailView = false;
+      gameContainer.classList.remove('detail-mode');
+      
+      // Hide all detail views
+      const detailViews = document.querySelectorAll('.detail-view');
+      detailViews.forEach(view => view.classList.remove('active'));
+      
+      // Clear detail interactive elements
+      detailInteractiveElements.forEach(el => el.classList.remove('active'));
+      detailInteractiveElements = [];
+      currentDetailIndex = 0;
+      
+      console.log('Returning to main menu');
+    });
   }
 
   function selectCurrentMenuItem() {
