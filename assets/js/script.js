@@ -1,8 +1,8 @@
-
 /* Loading screen functionality */
 document.addEventListener('DOMContentLoaded', function() {
   const loadingScreen = document.getElementById('loadingScreen');
   const lcdContent = document.getElementById('lcdContent');
+  const lcd = document.querySelector('.lcd'); // reference to LCD for background GIF
   let hasStarted = false;
 
   // Function to hide loading screen and show LCD content
@@ -12,9 +12,77 @@ document.addEventListener('DOMContentLoaded', function() {
     
     loadingScreen.classList.add('hidden');
     lcdContent.classList.add('show');
+
+    // Reveal background GIF behind content
+    if (lcd) {
+      // slight delay to let loading screen begin fading before showing GIF
+      setTimeout(() => lcd.classList.add('show-background'), 50);
+    }
     
     // Remove boot class after LCD content is shown
     setTimeout(()=>document.body.classList.remove('boot'),300);
+    
+    // Initialize menu after device starts
+    initializeMenu();
+  }
+
+  // Menu navigation system
+  let currentMenuIndex = 0;
+  const menuItems = [];
+  const contentSections = [];
+  let menuPointer = null;
+
+  function initializeMenu() {
+    // Get menu elements
+    const menuItemElements = document.querySelectorAll('.menu-item');
+    const contentSectionElements = document.querySelectorAll('.content-section');
+    menuPointer = document.querySelector('.menu-pointer');
+    
+    // Convert NodeLists to arrays
+    menuItems.length = 0;
+    contentSections.length = 0;
+    menuItemElements.forEach(item => menuItems.push(item));
+    contentSectionElements.forEach(section => contentSections.push(section));
+    
+    // Set initial pointer position
+    updateMenuPointer();
+    
+    console.log('Menu initialized with', menuItems.length, 'items');
+  }
+
+  function updateMenuPointer() {
+    if (!menuPointer || menuItems.length === 0) return;
+    
+    // Calculate position based on current menu index
+    const itemHeight = 1.1; // rem - matches .menu-item height
+    const topOffset = 0.8 + 0.25; // rem - margin-top + half item height for centering
+    const pointerTop = topOffset + (currentMenuIndex * (itemHeight + 0.15)); // 0.15rem is margin-bottom
+    
+    menuPointer.style.top = `${pointerTop}rem`;
+    
+    // Update active states
+    menuItems.forEach((item, index) => {
+      item.classList.toggle('active', index === currentMenuIndex);
+    });
+    
+    // Update content sections
+    contentSections.forEach((section, index) => {
+      section.classList.toggle('active', index === currentMenuIndex);
+    });
+    
+    console.log('Menu pointer moved to index', currentMenuIndex);
+  }
+
+  function navigateMenu(direction) {
+    if (!hasStarted || menuItems.length === 0) return;
+    
+    if (direction === 'up') {
+      currentMenuIndex = Math.max(0, currentMenuIndex - 1);
+    } else if (direction === 'down') {
+      currentMenuIndex = Math.min(menuItems.length - 1, currentMenuIndex + 1);
+    }
+    
+    updateMenuPointer();
   }
 
   // Function to handle GBA button clicks to start the device
@@ -65,10 +133,11 @@ document.addEventListener('DOMContentLoaded', function() {
   if (selectButton) selectButton.addEventListener('touchend', handleGBAButtonStart);
   if (brightnessButton) brightnessButton.addEventListener('touchend', handleGBAButtonStart);
 
-  // Add press effects with logging
+  // Add press effects with logging and menu navigation
   dpadUp.addEventListener('mousedown', (e) => {
     console.log('Up pressed');
     dpad.classList.add('pressing-up');
+    if (hasStarted) navigateMenu('up');
     e.preventDefault();
   });
   dpadUp.addEventListener('mouseup', () => {
@@ -80,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
   dpadDown.addEventListener('mousedown', (e) => {
     console.log('Down pressed');
     dpad.classList.add('pressing-down');
+    if (hasStarted) navigateMenu('down');
     e.preventDefault();
   });
   dpadDown.addEventListener('mouseup', () => {
@@ -114,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
   dpadUp.addEventListener('touchstart', (e) => {
     console.log('Up touched');
     dpad.classList.add('pressing-up');
+    if (hasStarted) navigateMenu('up');
     e.preventDefault();
   });
   dpadUp.addEventListener('touchend', () => {
@@ -124,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
   dpadDown.addEventListener('touchstart', (e) => {
     console.log('Down touched');
     dpad.classList.add('pressing-down');
+    if (hasStarted) navigateMenu('down');
     e.preventDefault();
   });
   dpadDown.addEventListener('touchend', () => {
@@ -219,5 +291,58 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   brightnessButton.addEventListener('touchend', () => {
     console.log('Brightness button touch ended');
+  });
+
+  // Keyboard support for arrow keys and menu navigation
+  document.addEventListener('keydown', (e) => {
+    // Any key starts the device if not started
+    if (!hasStarted) {
+      handleGBAButtonStart(e);
+      return;
+    }
+
+    // Arrow key navigation after device is started
+    switch(e.key) {
+      case 'ArrowUp':
+        console.log('Arrow Up pressed');
+        dpad.classList.add('pressing-up');
+        navigateMenu('up');
+        e.preventDefault();
+        break;
+      case 'ArrowDown':
+        console.log('Arrow Down pressed');
+        dpad.classList.add('pressing-down');
+        navigateMenu('down');
+        e.preventDefault();
+        break;
+      case 'ArrowLeft':
+        console.log('Arrow Left pressed');
+        dpad.classList.add('pressing-left');
+        e.preventDefault();
+        break;
+      case 'ArrowRight':
+        console.log('Arrow Right pressed');
+        dpad.classList.add('pressing-right');
+        e.preventDefault();
+        break;
+    }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    // Remove D-pad press effects on key release
+    switch(e.key) {
+      case 'ArrowUp':
+        dpad.classList.remove('pressing-up');
+        break;
+      case 'ArrowDown':
+        dpad.classList.remove('pressing-down');
+        break;
+      case 'ArrowLeft':
+        dpad.classList.remove('pressing-left');
+        break;
+      case 'ArrowRight':
+        dpad.classList.remove('pressing-right');
+        break;
+    }
   });
 });

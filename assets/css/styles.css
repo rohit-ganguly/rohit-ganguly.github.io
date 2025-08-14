@@ -88,6 +88,25 @@ body.boot,body{             /* boot class removed after flash */
     0 2px 4px rgba(0,0,0,0.4) inset,
     0 -1px 2px rgba(255,255,255,0.1) inset;
 }
+
+/* Background GIF styles */
+.lcd::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('../background.gif') center center no-repeat;
+  background-size: cover;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+.lcd.show-background::after {
+  opacity: 1;
+}
   /* boot flash */
   body.boot .lcd::before{
     content:'';
@@ -98,9 +117,140 @@ body.boot,body{             /* boot class removed after flash */
   @keyframes bootFlash{0%,100%{background:#fff}50%{background:#000}}
   @keyframes bootFade {to{opacity:0}}
 
-.lcd-content{padding:.6rem;color:#000;font-size:.55rem}
-h2{font-size:.7rem;color:#002061;margin-bottom:.6rem}
-section p{margin-bottom:.2rem;line-height:1.3}
+.lcd-content {
+  padding: 0;
+  color: #000;
+  font-size: .55rem;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in, visibility 0.5s ease-in;
+  height: 100%;
+  overflow: hidden;
+}
+
+.lcd-content.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Game container layout with content and menu */
+.game-container {
+  display: flex;
+  height: 100%;
+  padding: 0.1rem;
+  position: relative;
+}
+
+.game-content {
+  flex: 1;
+  padding: .6rem;
+  overflow-y: auto;
+  margin-right: 0.3rem;
+}
+
+/* Menu styling */
+.game-menu {
+  width: 28%;
+  height: calc(100% - 0.6rem);
+  max-height: 95%;
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 3px;
+  box-shadow: 
+    0 0 0 1px #666,
+    0 0 0 3px #fff,
+    0 0 0 4px #333;
+  margin: 0.3rem;
+  padding: 0.3rem 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.menu-items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 0.8rem;
+  margin-left: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 0.5rem);
+}
+
+/* Menu item with fixed spacing */
+.menu-item {
+  padding: 0.25rem 0.15rem 0.25rem 0.3rem;
+  cursor: pointer;
+  position: relative;
+  font-size: 0.45rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.15rem;
+  white-space: nowrap;
+  height: 1.1rem;
+  line-height: 1;
+}
+
+/* Active menu item styling */
+.menu-item.active {
+  color: #002061;
+  font-weight: bold;
+}
+
+/* Menu pointer - triangle that moves between items */
+.menu-pointer {
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0.25rem 0 0.25rem 0.3rem;
+  border-color: transparent transparent transparent #000066;
+  transition: top 0.2s ease-out;
+  animation: blink-pointer 0.8s step-end infinite;
+  will-change: top;
+}
+
+/* Blinking animation for pointer */
+@keyframes blink-pointer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Content sections */
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.content-section h2 {
+  font-size: .7rem;
+  color: #002061;
+  margin-bottom: .6rem;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+}
+
+.content-section section {
+  display: block;
+}
+
+section p {
+  margin-bottom: .2rem;
+  line-height: 1.3;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 3px;
+  border-radius: 2px;
+}
 
 .logo{
   font-size:.6rem;color:#f7f7f7;letter-spacing:.3px;
