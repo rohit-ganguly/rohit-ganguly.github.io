@@ -29,9 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Menu navigation system
   let currentMenuIndex = 0;
   let isDetailView = false;
+  let currentDetailIndex = 0;
+  let detailInteractiveElements = [];
   const menuItems = [];
   const contentSections = [];
   let menuPointer = null;
+  let detailPointer = null;
   let gameContainer = null;
 
   function initializeMenu() {
@@ -93,9 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function navigateMenu(direction) {
     if (!hasStarted || menuItems.length === 0) return;
     
-    // If in detail view, handle scrolling instead of menu navigation
+    // If in detail view, handle detail navigation instead of menu navigation
     if (isDetailView) {
-      scrollDetailView(direction);
+      navigateDetailView(direction);
       return;
     }
     
@@ -106,6 +109,138 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     updateMenuPointer();
+  }
+
+  function navigateDetailView(direction) {
+    // Special handling for contact detail view
+    if (isDetailView && document.getElementById('contact-detail').classList.contains('active')) {
+      navigateContactCarousel(direction);
+      return;
+    }
+    
+    if (!isDetailView || detailInteractiveElements.length === 0) {
+      // Fallback to scrolling if no interactive elements
+      scrollDetailView(direction);
+      return;
+    }
+    
+    if (direction === 'up') {
+      currentDetailIndex = currentDetailIndex === 0 ? detailInteractiveElements.length - 1 : currentDetailIndex - 1;
+    } else if (direction === 'down') {
+      currentDetailIndex = currentDetailIndex === detailInteractiveElements.length - 1 ? 0 : currentDetailIndex + 1;
+    }
+    
+    updateDetailPointer();
+    scrollToActiveDetailElement();
+  }
+
+  function updateDetailPointer() {
+    if (!detailPointer || detailInteractiveElements.length === 0) return;
+    
+    const activeElement = detailInteractiveElements[currentDetailIndex];
+    if (!activeElement) return;
+    
+    // Remove active class from all elements
+    detailInteractiveElements.forEach(el => el.classList.remove('active'));
+    
+    // Add active class to current element
+    activeElement.classList.add('active');
+    
+    // Position pointer relative to the active element
+    const detailContent = activeElement.closest('.detail-content');
+    if (!detailContent) return;
+    
+    const elementRect = activeElement.getBoundingClientRect();
+    const contentRect = detailContent.getBoundingClientRect();
+    
+    // Calculate position relative to detail-content
+    const relativeTop = elementRect.top - contentRect.top + detailContent.scrollTop;
+    
+    detailPointer.style.top = `${relativeTop + (elementRect.height / 2)}px`;
+    detailPointer.style.display = 'block';
+    
+    console.log('Detail pointer moved to index', currentDetailIndex);
+  }
+
+  function scrollToActiveDetailElement() {
+    if (!detailInteractiveElements[currentDetailIndex]) return;
+    
+    const activeElement = detailInteractiveElements[currentDetailIndex];
+    const detailContent = activeElement.closest('.detail-content');
+    
+    if (detailContent) {
+      const elementTop = activeElement.offsetTop;
+      const elementHeight = activeElement.offsetHeight;
+      const containerHeight = detailContent.clientHeight;
+      const scrollTop = detailContent.scrollTop;
+      
+      // Check if element is visible
+      const elementVisible = elementTop >= scrollTop && 
+                           elementTop + elementHeight <= scrollTop + containerHeight;
+      
+      if (!elementVisible) {
+        // Scroll to center the element
+        const targetScroll = elementTop - (containerHeight / 2) + (elementHeight / 2);
+        detailContent.scrollTop = Math.max(0, targetScroll);
+      }
+    }
+  }
+
+  function initializeDetailInteractiveElements(detailView) {
+    detailInteractiveElements = [];
+    currentDetailIndex = 0;
+    
+    if (!detailView) return;
+    
+    // Special handling for contact detail view
+    if (detailView.id === 'contact-detail') {
+      initializeContactCarousel(detailView);
+      return;
+    }
+    
+    // Find all interactive elements (links, etc.)
+    const interactiveElements = detailView.querySelectorAll('a.contact-link, .detail-interactive');
+    
+    interactiveElements.forEach(el => {
+      detailInteractiveElements.push(el);
+      // Add click handler
+      el.addEventListener('click', (e) => {
+        if (isDetailView && el.classList.contains('active')) {
+          // Element is selected, allow normal click behavior
+          return true;
+        }
+        // Prevent default if not selected
+        e.preventDefault();
+      });
+    });
+    
+    // Get the detail pointer for this view
+    detailPointer = detailView.querySelector('.detail-view-pointer');
+    
+    if (detailInteractiveElements.length > 0) {
+      updateDetailPointer();
+    } else if (detailPointer) {
+      detailPointer.style.display = 'none';
+    }
+    
+    console.log('Initialized detail interactive elements:', detailInteractiveElements.length);
+  }
+
+  function selectCurrentDetailItem() {
+    // Special handling for contact detail view
+    if (isDetailView && document.getElementById('contact-detail').classList.contains('active')) {
+      selectCurrentContactItem();
+      return;
+    }
+    
+    if (!isDetailView || detailInteractiveElements.length === 0) return;
+    
+    const currentElement = detailInteractiveElements[currentDetailIndex];
+    if (currentElement && currentElement.tagName === 'A') {
+      // For links, trigger the click
+      currentElement.click();
+      console.log('Clicked detail link:', currentElement.href);
+    }
   }
 
   function scrollDetailView(direction) {
@@ -139,6 +274,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const targetDetail = document.getElementById(`${section}-detail`);
     if (targetDetail) {
       targetDetail.classList.add('active');
+      // Initialize interactive elements for this detail view
+      initializeDetailInteractiveElements(targetDetail);
     }
     
     console.log('Showing detail view for:', section);
@@ -154,15 +291,89 @@ document.addEventListener('DOMContentLoaded', function() {
     const detailViews = document.querySelectorAll('.detail-view');
     detailViews.forEach(view => view.classList.remove('active'));
     
+    // Clear detail interactive elements
+    detailInteractiveElements.forEach(el => el.classList.remove('active'));
+    detailInteractiveElements = [];
+    currentDetailIndex = 0;
+    
     console.log('Returning to main menu');
   }
 
   function selectCurrentMenuItem() {
-    if (isDetailView || !hasStarted || menuItems.length === 0) return;
+    if (!hasStarted) return;
     
-    const currentItem = menuItems[currentMenuIndex];
+    if (isDetailView) {
+      // In detail view, select the current interactive element
+      selectCurrentDetailItem();
+    } else if (menuItems.length > 0) {
+      // In main menu, show detail view
+      const currentItem = menuItems[currentMenuIndex];
+      if (currentItem) {
+        showDetailView(currentItem.dataset.section);
+      }
+    }
+  }
+
+  // Contact carousel specific functions
+  let contactCarouselIndex = 0;
+  let contactCarouselItems = [];
+  
+  function initializeContactCarousel(detailView) {
+    // Get carousel items
+    contactCarouselItems = Array.from(detailView.querySelectorAll('.contact-carousel-item'));
+    contactCarouselIndex = 0;
+    
+    // Hide the detail pointer for contact carousel
+    detailPointer = detailView.querySelector('.detail-view-pointer');
+    if (detailPointer) {
+      detailPointer.style.display = 'none';
+    }
+    
+    // Initialize first item as active
+    updateContactCarousel();
+    
+    console.log('Initialized contact carousel with', contactCarouselItems.length, 'items');
+  }
+  
+  function navigateContactCarousel(direction) {
+    if (contactCarouselItems.length === 0) return;
+    
+    if (direction === 'left') {
+      contactCarouselIndex = contactCarouselIndex === 0 ? contactCarouselItems.length - 1 : contactCarouselIndex - 1;
+    } else if (direction === 'right') {
+      contactCarouselIndex = contactCarouselIndex === contactCarouselItems.length - 1 ? 0 : contactCarouselIndex + 1;
+    }
+    
+    updateContactCarousel();
+  }
+  
+  function updateContactCarousel() {
+    if (contactCarouselItems.length === 0) return;
+    
+    // Update carousel items
+    contactCarouselItems.forEach((item, index) => {
+      item.classList.toggle('active', index === contactCarouselIndex);
+    });
+    
+    // Update progress dots
+    const dots = document.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === contactCarouselIndex);
+    });
+    
+    console.log('Contact carousel updated to index:', contactCarouselIndex);
+  }
+  
+  function selectCurrentContactItem() {
+    if (contactCarouselItems.length === 0) return;
+    
+    const currentItem = contactCarouselItems[contactCarouselIndex];
     if (currentItem) {
-      showDetailView(currentItem.dataset.section);
+      const url = currentItem.dataset.url;
+      if (url) {
+        window.open(url, '_blank');
+        console.log('Opened contact link:', url);
+      }
     }
   }
 
@@ -242,6 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
   dpadLeft.addEventListener('mousedown', (e) => {
     console.log('Left pressed');
     dpad.classList.add('pressing-left');
+    if (hasStarted) navigateMenu('left');
     e.preventDefault();
   });
   dpadLeft.addEventListener('mouseup', () => {
@@ -253,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
   dpadRight.addEventListener('mousedown', (e) => {
     console.log('Right pressed');
     dpad.classList.add('pressing-right');
+    if (hasStarted) navigateMenu('right');
     e.preventDefault();
   });
   dpadRight.addEventListener('mouseup', () => {
@@ -287,6 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
   dpadLeft.addEventListener('touchstart', (e) => {
     console.log('Left touched');
     dpad.classList.add('pressing-left');
+    if (hasStarted) navigateMenu('left');
     e.preventDefault();
   });
   dpadLeft.addEventListener('touchend', () => {
@@ -297,6 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
   dpadRight.addEventListener('touchstart', (e) => {
     console.log('Right touched');
     dpad.classList.add('pressing-right');
+    if (hasStarted) navigateMenu('right');
     e.preventDefault();
   });
   dpadRight.addEventListener('touchend', () => {
@@ -406,11 +621,13 @@ document.addEventListener('DOMContentLoaded', function() {
       case 'ArrowLeft':
         console.log('Arrow Left pressed');
         dpad.classList.add('pressing-left');
+        if (hasStarted) navigateMenu('left');
         e.preventDefault();
         break;
       case 'ArrowRight':
         console.log('Arrow Right pressed');
         dpad.classList.add('pressing-right');
+        if (hasStarted) navigateMenu('right');
         e.preventDefault();
         break;
       case 'Enter':

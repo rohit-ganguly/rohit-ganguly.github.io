@@ -71,6 +71,7 @@
             
             <!-- Detail Views -->
             <div class="detail-view" id="about-detail">
+              <div class="detail-view-pointer"></div>
               <div class="detail-content">
                 <h2>ABOUT ME</h2>
                 <div class="detail-body">
@@ -79,51 +80,70 @@
                   <h3>Currently:</h3>
                   <p>A PM at Microsoft for AI Tools in VS Code. Previously, I helped launch the Azure MCP Server on the Azure Developer Experience team.</p>
                   
-                  <h3>Interests</h3>
+                  <h3>Interests:</h3>
                   <ul>
                     <li>Secure, production-ready agents</li>
-                    <li>Music production, guitar, and bass guitar</li>
+                    <li>Music production</li>
+                    <li>Guitar and bass guitar</li>
                     <li>Learning languages</li>
                     <li>Good coffee</li>
                     <li>Soccer, tennis, and lifting</li>
                   </ul>
                   
-                  <h3>Philosophy</h3>
-                  <p>I believe in writing clean, maintainable code and creating products that truly make a difference in people's lives.</p>
+                  <h3>My ethos:</h3>
+                  <p>Be pragmatic, deeply caring for those around you, and always grateful.</p>
                 </div>
               </div>
               <div class="back-instruction">Press B or ESC to go back</div>
             </div>
             
             <div class="detail-view" id="resume-detail">
+              <div class="detail-view-pointer"></div>
               <div class="detail-content">
                 <h2>RESUME</h2>
                 <div class="detail-body">
                   <h3>Work Experience</h3>
                   <div class="experience-item">
-                    <h4>Senior Software Developer</h4>
-                    <p class="company">Tech Solutions Inc. (2022-Present)</p>
+                    <h4>Microsoft</h4>
+                    <p class="company">Product Manager II <br> June 2022-Present</p>
                     <ul>
-                      <li>Led development of scalable web applications</li>
-                      <li>Mentored junior developers</li>
-                      <li>Implemented modern DevOps practices</li>
+                      <li>Working on AI Tools in VS Code.</li>
+                      <li>Previously worked on Azure Agent + Developer Experiences.</li>
                     </ul>
                   </div>
                   
                   <div class="experience-item">
-                    <h4>Frontend Developer</h4>
-                    <p class="company">Digital Creative Agency (2020-2022)</p>
+                    <h4>C.H. Robinson</h4>
+                    <p class="company">Product Manager I & II<br> June 2021 - June 2022</p>
                     <ul>
-                      <li>Built responsive websites for various clients</li>
-                      <li>Collaborated with design teams</li>
-                      <li>Optimized performance and accessibility</li>
+                      <li>Worked on the company's Enterprise Design System.</li>
+                    </ul>
+                  </div>
+
+                  <div class="experience-item">
+                    <h4>Susquehanna International Group </h4>
+                    <p class="company">Software Engineer (<i>Intern</i>) <br> June 2020 - Aug 2020</p>
+                    <ul>
+                      <li>Worked on the Strategic Options Trading team.</li>
+                    </ul>
+                  </div>
+
+                  <div class="experience-item">
+                    <h4>C-Labs</h4>
+                    <p class="company">C-Software Engineer (<i>Intern</i>) <br> Jan 2019 - Aug 2019</p>
+                    <ul>
+                      <li>Worked for a super fun Industrial IoT company.</li>
                     </ul>
                   </div>
                   
                   <h3>Education</h3>
                   <div class="education-item">
-                    <h4>Computer Science Degree</h4>
-                    <p class="school">University of Technology (2016-2020)</p>
+                    <h4>Georgia Tech</h4>
+                    <p class="school">Master of Science, Computer Science</p>
+                  </div>
+                  <div class="education-item">
+                    <h4>University of Pittsburgh</h4>
+                    <p class="school">Bachelor of Science, Computer Science</p>
                   </div>
                 </div>
               </div>
@@ -131,6 +151,7 @@
             </div>
             
             <div class="detail-view" id="skills-detail">
+              <div class="detail-view-pointer"></div>
               <div class="detail-content">
                 <h2>TECHNICAL SKILLS</h2>
                 <div class="detail-body">
@@ -174,34 +195,59 @@
             </div>
             
             <div class="detail-view" id="contact-detail">
+              <div class="detail-view-pointer"></div>
               <div class="detail-content">
                 <h2>GET IN TOUCH</h2>
                 <div class="detail-body">
-                  <p>I'm always interested in new opportunities and collaborations. Feel free to reach out!</p>
-                  
-                  <h3>Contact Information</h3>
-                  <div class="contact-item">
-                    <h4>Email</h4>
-                    <p>rohit@example.com</p>
+                  <!-- Horizontal carousel navigation -->
+                  <div class="contact-carousel">
+                    <div class="contact-carousel-container">
+                      <!-- Left Arrow -->
+                      <div class="carousel-arrow carousel-arrow-left">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                      </div>
+                      
+                      <!-- Center Icon Display -->
+                      <div class="contact-icon-center">
+                        <div class="contact-carousel-item active" data-contact="github" data-url="https://github.com/rohit-ganguly">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.93.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.69.82.58C20.56 21.8 24 17.3 24 12 24 5.37 18.63 0 12 0z"/>
+                          </svg>
+                          <span class="carousel-label">GitHub</span>
+                        </div>
+                        <div class="contact-carousel-item" data-contact="linkedin" data-url="https://linkedin.com/in/rohit-ganguly">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                          </svg>
+                          <span class="carousel-label">LinkedIn</span>
+                        </div>
+                        <div class="contact-carousel-item" data-contact="twitter" data-url="https://twitter.com/rohitiwnl">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                          </svg>
+                          <span class="carousel-label">Twitter</span>
+                        </div>
+                      </div>
+                      
+                      <!-- Right Arrow -->
+                      <div class="carousel-arrow carousel-arrow-right">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    
+                    <!-- Progress dots -->
+                    <div class="carousel-dots">
+                      <div class="carousel-dot active"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                    </div>
                   </div>
                   
-                  <div class="contact-item">
-                    <h4>LinkedIn</h4>
-                    <p>linkedin.com/in/rohitganguly</p>
-                  </div>
-                  
-                  <div class="contact-item">
-                    <h4>GitHub</h4>
-                    <p>github.com/rohit-ganguly</p>
-                  </div>
-                  
-                  <div class="contact-item">
-                    <h4>Location</h4>
-                    <p>San Francisco, CA</p>
-                  </div>
-                  
-                  <h3>Let's Connect</h3>
-                  <p>Whether you have a project in mind, want to discuss tech, or just want to say hello, I'd love to hear from you!</p>
+                  <p>Use LEFT/RIGHT to navigate, press A/Enter to visit link</p>
                 </div>
               </div>
               <div class="back-instruction">Press B or ESC to go back</div>

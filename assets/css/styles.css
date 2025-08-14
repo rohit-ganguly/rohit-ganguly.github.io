@@ -277,6 +277,7 @@ section p {
   flex: 1;
   padding: .6rem;
   overflow-y: auto;
+  position: relative;
   /* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
@@ -738,4 +739,182 @@ section p {
 .lcd-content.show {
   opacity: 1;
   visibility: visible;
+}
+
+/* Contact link styling */
+.contact-link {
+  color: #4b6dd4;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.contact-link:hover {
+  background-color: rgba(75, 109, 212, 0.1);
+}
+
+.contact-link.active {
+  background-color: #4b6dd4;
+  color: white;
+  text-decoration: none;
+}
+
+/* Detail view navigation pointer */
+.detail-view-pointer {
+  position: absolute;
+  left: 0.3rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0.25rem 0 0.25rem 0.3rem;
+  border-color: transparent transparent transparent #002061;
+  transition: top 0.2s ease-out;
+  animation: blink-pointer 0.8s step-end infinite;
+  will-change: top;
+  z-index: 5;
+  display: none;
+}
+
+.detail-view.active .detail-view-pointer {
+  display: block;
+}
+
+/* Interactive elements in detail view */
+.detail-interactive {
+  position: relative;
+  cursor: pointer;
+}
+
+.detail-interactive.active {
+  background-color: rgba(75, 109, 212, 0.1);
+  border-radius: 2px;
+}
+
+/* Contact page specific styles */
+.contact-carousel {
+  margin: 1rem 0 2rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 32, 97, 0.2);
+}
+
+.contact-carousel-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  height: 5rem; /* Fixed height to prevent resizing */
+  position: relative;
+}
+
+.carousel-arrow {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #002061;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  flex-shrink: 0;
+}
+
+.carousel-arrow:hover {
+  opacity: 1;
+}
+
+.carousel-arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+.contact-icon-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  min-width: 8rem; /* Fixed minimum width to prevent layout shift */
+}
+
+.contact-carousel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.contact-carousel-item.active {
+  opacity: 1;
+  border: 2px solid #002061;
+  background-color: rgba(75, 109, 212, 0.2);
+}
+
+.contact-carousel-item.active .carousel-icon,
+.contact-carousel-item.active .carousel-label {
+  animation: blink-contact 1s ease-in-out infinite;
+}
+
+.carousel-icon {
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+  color: #002061;
+  flex-shrink: 0;
+}
+
+.carousel-label {
+  font-size: 0.6rem;
+  color: #002061;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 32, 97, 0.3);
+  border-radius: 0;
+  transition: all 0.3s ease;
+  /* Pixelated square dots */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.carousel-dot.active {
+  background: #002061;
+  transform: scale(1.2);
+}
+
+/* Blinking animation for active contact item */
+@keyframes blink-contact {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
 }
