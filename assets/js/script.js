@@ -55,8 +55,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate position based on current menu index
     const itemHeight = 1.1; // rem - matches .menu-item height
-    const topOffset = 0.8 + 0.25; // rem - margin-top + half item height for centering
-    const pointerTop = topOffset + (currentMenuIndex * (itemHeight + 0.15)); // 0.15rem is margin-bottom
+    const itemSpacing = 0.15; // rem - margin-bottom between items
+    const menuTopMargin = 0.8; // rem - menu-items margin-top
+    const itemPadding = 0.25; // rem - menu-item padding-top
+    const pointerOffset = 0.55; // rem - center the pointer vertically in the item
+    
+    const pointerTop = menuTopMargin + itemPadding + pointerOffset + (currentMenuIndex * (itemHeight + itemSpacing));
     
     menuPointer.style.top = `${pointerTop}rem`;
     
@@ -77,9 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!hasStarted || menuItems.length === 0) return;
     
     if (direction === 'up') {
-      currentMenuIndex = Math.max(0, currentMenuIndex - 1);
+      currentMenuIndex = currentMenuIndex === 0 ? menuItems.length - 1 : currentMenuIndex - 1;
     } else if (direction === 'down') {
-      currentMenuIndex = Math.min(menuItems.length - 1, currentMenuIndex + 1);
+      currentMenuIndex = currentMenuIndex === menuItems.length - 1 ? 0 : currentMenuIndex + 1;
     }
     
     updateMenuPointer();
