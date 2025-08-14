@@ -329,6 +329,16 @@ document.addEventListener('DOMContentLoaded', function() {
         dpad.classList.add('pressing-right');
         e.preventDefault();
         break;
+      case 'Enter':
+        console.log('Enter pressed (A button)');
+        aButton.classList.add('pressed');
+        e.preventDefault();
+        break;
+      case 'Escape':
+        console.log('Escape pressed (B button)');
+        bButton.classList.add('pressed');
+        e.preventDefault();
+        break;
     }
   });
 
@@ -346,6 +356,12 @@ document.addEventListener('DOMContentLoaded', function() {
         break;
       case 'ArrowRight':
         dpad.classList.remove('pressing-right');
+        break;
+      case 'Enter':
+        aButton.classList.remove('pressed');
+        break;
+      case 'Escape':
+        bButton.classList.remove('pressed');
         break;
     }
   });
