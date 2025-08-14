@@ -82,11 +82,30 @@ body.boot,body{             /* boot class removed after flash */
   background:linear-gradient(135deg, var(--lcd-top) 0%, #cde5ff 30%, var(--lcd-bot) 70%, #d9ebff 100%);
   border:2px solid #1c1c1c;
   border-radius:3px;
-  overflow-y:auto;
+  overflow:hidden;
   position:relative;
   box-shadow:
     0 2px 4px rgba(0,0,0,0.4) inset,
     0 -1px 2px rgba(255,255,255,0.1) inset;
+}
+
+/* Brightness overlay for dimmed mode */
+.lcd::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 500;
+  pointer-events: none;
+}
+
+.lcd.dimmed::before {
+  opacity: 1;
 }
 
 /* Background GIF styles */
@@ -159,6 +178,28 @@ body.boot,body{             /* boot class removed after flash */
 
 .fade-overlay.fade-in {
   opacity: 1;
+}
+
+/* Menu instructions in bottom left */
+.menu-instructions {
+  position: absolute;
+  bottom: .3rem;
+  left: .5rem;
+  font-size: .4rem;
+  color: #002061;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: .2rem .4rem;
+  border-radius: 2px;
+  border: 1px solid #002061;
+  z-index: 10;
+  transition: opacity 0.3s ease-in-out;
+  animation: blink-instruction 2s ease-in-out infinite;
+}
+
+/* Hide instructions in detail mode */
+.game-container.detail-mode .menu-instructions {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .game-content {
@@ -293,8 +334,8 @@ section p {
 
 .detail-content {
   flex: 1;
-  padding: .6rem;
-  overflow-y: auto;
+  padding: .3rem;
+  overflow: hidden;
   position: relative;
   /* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
   scrollbar-width: none; /* Firefox */
@@ -307,13 +348,13 @@ section p {
 }
 
 .detail-content h2 {
-  font-size: .7rem;
+  font-size: .6rem;
   color: #002061;
-  margin-bottom: .8rem;
+  margin-bottom: .3rem;
   text-shadow: 0 1px 1px rgba(255,255,255,0.7);
   text-align: center;
   border-bottom: 1px solid #002061;
-  padding-bottom: .3rem;
+  padding-bottom: .2rem;
 }
 
 .detail-body {
@@ -886,25 +927,27 @@ section p {
 }
 
 .carousel-icon {
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   margin-bottom: 0.5rem;
-  color: #002061;
   flex-shrink: 0;
 }
 
 .carousel-label {
+  font-family: 'Press Start 2P', monospace;
   font-size: 0.6rem;
   color: #002061;
   text-align: center;
-  white-space: nowrap;
+  line-height: 1.1;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .carousel-dots {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
 }
 
 .carousel-dot {
@@ -935,4 +978,251 @@ section p {
   100% {
     opacity: 1;
   }
+}
+
+/* Blogs carousel styles */
+.blogs-carousel {
+  margin: 0.4rem 0 0.4rem 0;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 32, 97, 0.2);
+}
+
+.blogs-carousel-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+  height: 6rem;
+  position: relative;
+}
+
+.blogs-icon-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 12rem;
+  max-width: 12rem;
+}
+
+.blogs-carousel-item {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  width: 12rem;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.blogs-carousel-item.active {
+  display: flex;
+  opacity: 1;
+  border: 2px solid #002061;
+  background-color: rgba(75, 109, 212, 0.2);
+}
+
+.blogs-carousel-item.active .carousel-icon,
+.blogs-carousel-item.active .carousel-label {
+  animation: blink-blogs 1s ease-in-out infinite;
+}
+
+/* Specific styling for blogs carousel icons and labels */
+.blogs-carousel-item .carousel-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  flex-shrink: 0;
+}
+
+.blogs-carousel-item .carousel-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.48rem;
+  color: #002061;
+  text-align: center;
+  line-height: 1.1;
+  word-break: break-word;
+  max-width: 100%;
+  margin-bottom: 0.3rem;
+  flex-grow: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* Blinking animation for active blogs item */
+@keyframes blink-blogs {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Videos carousel styles */
+.videos-carousel {
+  margin: 0.4rem 0 0.4rem 0;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 32, 97, 0.2);
+}
+
+.videos-carousel-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+  height: 6rem;
+  position: relative;
+}
+
+.videos-icon-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 12rem;
+  max-width: 12rem;
+}
+
+.videos-carousel-item {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  width: 12rem;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.videos-carousel-item.active {
+  display: flex;
+  opacity: 1;
+  border: 2px solid #002061;
+  background-color: rgba(75, 109, 212, 0.2);
+}
+
+/* Specific styling for videos carousel icons and labels */
+.videos-carousel-item .carousel-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  flex-shrink: 0;
+}
+
+.videos-carousel-item .carousel-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.48rem;
+  color: #002061;
+  text-align: center;
+  line-height: 1.1;
+  word-break: break-word;
+  max-width: 100%;
+  margin-bottom: 0.3rem;
+  flex-grow: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.videos-carousel-item.active .carousel-icon,
+.videos-carousel-item.active .carousel-label {
+  animation: blink-videos 1s ease-in-out infinite;
+}
+
+/* Blinking animation for active videos item */
+@keyframes blink-videos {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Instructional text in carousel sections */
+.videos-carousel p,
+.blogs-carousel p,
+.contact-carousel p {
+  font-size: 0.35rem !important;
+  line-height: 1.1;
+  margin: 0.2rem 0 0 0;
+  padding: 0.15rem 0.25rem;
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Specific constraints for blogs and videos sections to prevent overflow */
+#blogs-detail .detail-content,
+#videos-detail .detail-content {
+  overflow: hidden;
+  max-height: 100%;
+  padding: .3rem .3rem .1rem .3rem;
+}
+
+#blogs-detail .detail-body,
+#videos-detail .detail-body {
+  height: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#blogs-detail .blogs-carousel,
+#videos-detail .videos-carousel {
+  margin: 0.2rem 0 0.2rem 0;
+  padding: 0.4rem;
+}
+
+/* Ensure instructional text fits */
+#blogs-detail .detail-body p,
+#videos-detail .detail-body p {
+  margin-top: 0.1rem;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+/* Make carousel dots smaller */
+#blogs-detail .carousel-dot,
+#videos-detail .carousel-dot {
+  width: 6px;
+  height: 6px;
 }

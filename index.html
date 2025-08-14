@@ -44,6 +44,11 @@
             <!-- Fade overlay for navigation transitions -->
             <div class="fade-overlay" id="fadeOverlay"></div>
             
+            <!-- Button instructions for main menu -->
+            <div class="menu-instructions" id="menuInstructions">
+              A = advance, B = back
+            </div>
+            
             <!-- Main Menu View -->
             <div class="game-content menu-view active">
               <div id="about-section" class="content-section active">
@@ -58,16 +63,22 @@
                   <p>Learn about my work.</p>
                 </section>
               </div>
-              <div id="skills-section" class="content-section">
-                <h2>SKILLS</h2>
-                <section>
-                  <p>Technologies I work with.</p>
-                </section>
-              </div>
               <div id="contact-section" class="content-section">
                 <h2>CONTACT</h2>
                 <section>
                   <p>How to reach me.</p>
+                </section>
+              </div>
+              <div id="blogs-section" class="content-section">
+                <h2>BLOGS</h2>
+                <section>
+                  <p>My published articles and posts.</p>
+                </section>
+              </div>
+              <div id="videos-section" class="content-section">
+                <h2>VIDEOS</h2>
+                <section>
+                  <p>Conference talks and presentations.</p>
                 </section>
               </div>
             </div>
@@ -83,13 +94,13 @@
                   <h3>Currently:</h3>
                   <p>A PM at Microsoft for AI Tools in VS Code. Previously, I helped launch the Azure MCP Server on the Azure Developer Experience team.</p>
                   
-                  <h3>Interests:</h3>
+                  <h3>Passions:</h3>
                   <ul>
                     <li>Secure, production-ready agents</li>
                     <li>Music production</li>
                     <li>Guitar and bass guitar</li>
-                    <li>Learning languages</li>
-                    <li>Good coffee</li>
+                    <li>Poker</li>
+                    <li>Good cold brew</li>
                     <li>Soccer, tennis, and lifting</li>
                   </ul>
                   
@@ -147,50 +158,6 @@
                   <div class="education-item">
                     <h4>University of Pittsburgh</h4>
                     <p class="school">Bachelor of Science, Computer Science</p>
-                  </div>
-                </div>
-              </div>
-              <div class="back-instruction">Press B or ESC to go back</div>
-            </div>
-            
-            <div class="detail-view" id="skills-detail">
-              <div class="detail-view-pointer"></div>
-              <div class="detail-content">
-                <h2>TECHNICAL SKILLS</h2>
-                <div class="detail-body">
-                  <h3>Programming Languages</h3>
-                  <div class="skill-category">
-                    <span class="skill-item">JavaScript</span>
-                    <span class="skill-item">TypeScript</span>
-                    <span class="skill-item">Python</span>
-                    <span class="skill-item">HTML5</span>
-                    <span class="skill-item">CSS3</span>
-                  </div>
-                  
-                  <h3>Frameworks & Libraries</h3>
-                  <div class="skill-category">
-                    <span class="skill-item">React</span>
-                    <span class="skill-item">Node.js</span>
-                    <span class="skill-item">Express</span>
-                    <span class="skill-item">Vue.js</span>
-                    <span class="skill-item">Next.js</span>
-                  </div>
-                  
-                  <h3>Tools & Technologies</h3>
-                  <div class="skill-category">
-                    <span class="skill-item">Git</span>
-                    <span class="skill-item">Docker</span>
-                    <span class="skill-item">AWS</span>
-                    <span class="skill-item">MongoDB</span>
-                    <span class="skill-item">PostgreSQL</span>
-                  </div>
-                  
-                  <h3>Design & Other</h3>
-                  <div class="skill-category">
-                    <span class="skill-item">Figma</span>
-                    <span class="skill-item">Adobe Creative Suite</span>
-                    <span class="skill-item">UI/UX Design</span>
-                    <span class="skill-item">Responsive Design</span>
                   </div>
                 </div>
               </div>
@@ -256,13 +223,202 @@
               <div class="back-instruction">Press B or ESC to go back</div>
             </div>
             
+            <div class="detail-view" id="blogs-detail">
+              <div class="detail-view-pointer"></div>
+              <div class="detail-content">
+                <h2>PUBLISHED ARTICLES</h2>
+                <div class="detail-body">
+                  <!-- Horizontal carousel navigation -->
+                  <div class="blogs-carousel">
+                    <div class="blogs-carousel-container">
+                      <!-- Left Arrow -->
+                      <div class="carousel-arrow carousel-arrow-left">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                      </div>
+                      
+                      <!-- Center Article Display -->
+                      <div class="blogs-icon-center">
+                        <div class="blogs-carousel-item active" data-blog="azure-mcp" data-url="https://devblogs.microsoft.com/azure-sdk/introducing-the-azure-mcp-server/">
+                          <svg class="carousel-icon" viewBox="0 0 23 23" fill="currentColor">
+                            <path d="M0 0H11V11H0V0Z" fill="#002061"/>
+                            <path d="M12 0H23V11H12V0Z" fill="#002061"/>
+                            <path d="M0 12H11V23H0V12Z" fill="#002061"/>
+                            <path d="M12 12H23V23H12V12Z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Azure MCP Server</span>
+                        </div>
+                        <div class="blogs-carousel-item" data-blog="ai-chat-protocol" data-url="https://devblogs.microsoft.com/azure-sdk/announcing-the-public-preview-of-the-microsoft-ai-chat-protocol-library-for-javascript/">
+                          <svg class="carousel-icon" viewBox="0 0 23 23" fill="currentColor">
+                            <path d="M0 0H11V11H0V0Z" fill="#002061"/>
+                            <path d="M12 0H23V11H12V0Z" fill="#002061"/>
+                            <path d="M0 12H11V23H0V12Z" fill="#002061"/>
+                            <path d="M12 12H23V23H12V12Z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">AI Chat Protocol</span>
+                        </div>
+                        <div class="blogs-carousel-item" data-blog="mcp-may-2025" data-url="https://devblogs.microsoft.com/azure-sdk/azure-mcp-server-may-2025-release/">
+                          <svg class="carousel-icon" viewBox="0 0 23 23" fill="currentColor">
+                            <path d="M0 0H11V11H0V0Z" fill="#002061"/>
+                            <path d="M12 0H23V11H12V0Z" fill="#002061"/>
+                            <path d="M0 12H11V23H0V12Z" fill="#002061"/>
+                            <path d="M12 12H23V23H12V12Z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">MCP May 2025</span>
+                        </div>
+                        <div class="blogs-carousel-item" data-blog="azure-storage-js" data-url="https://devblogs.microsoft.com/azure-sdk/announcing-the-new-more-performant-beta-release-of-azure-storage-client-libraries-for-javascript/">
+                          <svg class="carousel-icon" viewBox="0 0 23 23" fill="currentColor">
+                            <path d="M0 0H11V11H0V0Z" fill="#002061"/>
+                            <path d="M12 0H23V11H12V0Z" fill="#002061"/>
+                            <path d="M0 12H11V23H0V12Z" fill="#002061"/>
+                            <path d="M12 12H23V23H12V12Z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Azure Storage JS</span>
+                        </div>
+                        <div class="blogs-carousel-item" data-blog="python-learn" data-url="https://devblogs.microsoft.com/python/python-learn-reference-refresh/">
+                          <svg class="carousel-icon" viewBox="0 0 23 23" fill="currentColor">
+                            <path d="M0 0H11V11H0V0Z" fill="#002061"/>
+                            <path d="M12 0H23V11H12V0Z" fill="#002061"/>
+                            <path d="M0 12H11V23H0V12Z" fill="#002061"/>
+                            <path d="M12 12H23V23H12V12Z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Python Docs</span>
+                        </div>
+                        <div class="blogs-carousel-item" data-blog="storage-pytorch" data-url="https://devblogs.microsoft.com/azure-sdk/introducing-the-azure-storage-connector-for-pytorch/">
+                          <svg class="carousel-icon" viewBox="0 0 23 23" fill="currentColor">
+                            <path d="M0 0H11V11H0V0Z" fill="#002061"/>
+                            <path d="M12 0H23V11H12V0Z" fill="#002061"/>
+                            <path d="M0 12H11V23H0V12Z" fill="#002061"/>
+                            <path d="M12 12H23V23H12V12Z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Storage PyTorch</span>
+                        </div>
+                      </div>
+                      
+                      <!-- Right Arrow -->
+                      <div class="carousel-arrow carousel-arrow-right">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    
+                    <!-- Progress dots -->
+                    <div class="carousel-dots">
+                      <div class="carousel-dot active"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="back-instruction">Press B or ESC to go back</div>
+            </div>
+            
+            <div class="detail-view" id="videos-detail">
+              <div class="detail-view-pointer"></div>
+              <div class="detail-content">
+                <h2>CONFERENCE TALKS</h2>
+                <div class="detail-body">
+                  <!-- Horizontal carousel navigation -->
+                  <div class="videos-carousel">
+                    <div class="videos-carousel-container">
+                      <!-- Left Arrow -->
+                      <div class="carousel-arrow carousel-arrow-left">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                      </div>
+                      
+                      <!-- Center Video Display -->
+                      <div class="videos-icon-center">
+                        <div class="videos-carousel-item active" data-video="pycon-2025" data-url="https://www.youtube.com/watch?v=k6Vm2hakkV4">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Microsoft Session for PyCon US 2025</span>
+                        </div>
+                        <div class="videos-carousel-item" data-video="azure-mcp-intro" data-url="https://www.youtube.com/watch?v=UqtsfXpDvgI">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Azure MCP Server Intro</span>
+                        </div>
+                        <div class="videos-carousel-item" data-video="python-azure-beginners" data-url="https://www.youtube.com/watch?v=-86r8KC0UlM">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Python + Azure for Beginners</span>
+                        </div>
+                        <div class="videos-carousel-item" data-video="build-2024" data-url="https://www.youtube.com/watch?v=8n8fSR_AFro">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Build 2024 - AI Chat Protocol</span>
+                        </div>
+                        <div class="videos-carousel-item" data-video="azure-sdk-python" data-url="https://www.youtube.com/watch?v=Qdlk-La6GLI">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Intro to the Azure SDK for Python</span>
+                        </div>
+                        <div class="videos-carousel-item" data-video="pycon-2024" data-url="https://www.youtube.com/watch?v=aJK6zPbw238">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">PyCon US 2024 - Speedrunning Azure + Python</span>
+                        </div>
+                        <div class="videos-carousel-item" data-video="community-standup" data-url="https://www.youtube.com/watch?v=EV6eOA6i5F0">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">WebApps with AI Chat Protocol</span>
+                        </div>
+                        <div class="videos-carousel-item" data-video="azure-sdk-feb-2023" data-url="https://www.youtube.com/watch?v=HizG8gMR9WI&t=904s">
+                          <svg class="carousel-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" fill="#002061"/>
+                          </svg>
+                          <span class="carousel-label">Azure SDK Community Standup</span>
+                        </div>
+                      </div>
+                      
+                      <!-- Right Arrow -->
+                      <div class="carousel-arrow carousel-arrow-right">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    
+                    <!-- Progress dots -->
+                    <div class="carousel-dots">
+                      <div class="carousel-dot active"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                      <div class="carousel-dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="back-instruction">Press B or ESC to go back</div>
+            </div>
+            
             <div class="game-menu">
               <div class="menu-pointer"></div>
               <ul class="menu-items">
                 <li class="menu-item active" data-section="about">ABOUT</li>
                 <li class="menu-item" data-section="resume">RESUME</li>
-                <li class="menu-item" data-section="skills">SKILLS</li>
                 <li class="menu-item" data-section="contact">CONTACT</li>
+                <li class="menu-item" data-section="blogs">BLOGS</li>
+                <li class="menu-item" data-section="videos">VIDEOS</li>
               </ul>
             </div>
           </div>

@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let detailPointer = null;
   let gameContainer = null;
   let fadeOverlay = null;
+  let isDimmed = false;
 
   // Fade transition functions
   function fadeToBlack(callback) {
@@ -54,6 +55,16 @@ document.addEventListener('DOMContentLoaded', function() {
         fadeOverlay.classList.remove('fade-in');
       }, 50); // Small delay to ensure content is rendered
     }, 300); // Wait for full fade to black
+  }
+
+  // Brightness toggle function
+  function toggleBrightness() {
+    if (!lcd) return;
+    
+    isDimmed = !isDimmed;
+    lcd.classList.toggle('dimmed', isDimmed);
+    
+    console.log('Brightness toggled:', isDimmed ? 'dimmed' : 'normal');
   }
 
   function initializeMenu() {
@@ -137,6 +148,18 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
+    // Special handling for blogs detail view
+    if (isDetailView && document.getElementById('blogs-detail').classList.contains('active')) {
+      navigateBlogsCarousel(direction);
+      return;
+    }
+    
+    // Special handling for videos detail view
+    if (isDetailView && document.getElementById('videos-detail').classList.contains('active')) {
+      navigateVideosCarousel(direction);
+      return;
+    }
+    
     if (!isDetailView || detailInteractiveElements.length === 0) {
       // Fallback to scrolling if no interactive elements
       scrollDetailView(direction);
@@ -217,6 +240,18 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
+    // Special handling for blogs detail view
+    if (detailView.id === 'blogs-detail') {
+      initializeBlogsCarousel(detailView);
+      return;
+    }
+    
+    // Special handling for videos detail view
+    if (detailView.id === 'videos-detail') {
+      initializeVideosCarousel(detailView);
+      return;
+    }
+    
     // Find all interactive elements (links, etc.)
     const interactiveElements = detailView.querySelectorAll('a.contact-link, .detail-interactive');
     
@@ -249,6 +284,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Special handling for contact detail view
     if (isDetailView && document.getElementById('contact-detail').classList.contains('active')) {
       selectCurrentContactItem();
+      return;
+    }
+    
+    // Special handling for blogs detail view
+    if (isDetailView && document.getElementById('blogs-detail').classList.contains('active')) {
+      selectCurrentBlogsItem();
+      return;
+    }
+    
+    // Special handling for videos detail view
+    if (isDetailView && document.getElementById('videos-detail').classList.contains('active')) {
+      selectCurrentVideosItem();
       return;
     }
     
@@ -396,6 +443,138 @@ document.addEventListener('DOMContentLoaded', function() {
       if (url) {
         window.open(url, '_blank');
         console.log('Opened contact link:', url);
+      }
+    }
+  }
+
+  // Blogs carousel specific functions
+  let blogsCarouselIndex = 0;
+  let blogsCarouselItems = [];
+  
+  function initializeBlogsCarousel(detailView) {
+    // Get carousel items
+    blogsCarouselItems = Array.from(detailView.querySelectorAll('.blogs-carousel-item'));
+    blogsCarouselIndex = 0;
+    
+    // Hide the detail pointer for blogs carousel
+    detailPointer = detailView.querySelector('.detail-view-pointer');
+    if (detailPointer) {
+      detailPointer.style.display = 'none';
+    }
+    
+    // Initialize first item as active
+    updateBlogsCarousel();
+    
+    console.log('Initialized blogs carousel with', blogsCarouselItems.length, 'items');
+  }
+  
+  function navigateBlogsCarousel(direction) {
+    if (blogsCarouselItems.length === 0) return;
+    
+    if (direction === 'left') {
+      blogsCarouselIndex = blogsCarouselIndex === 0 ? blogsCarouselItems.length - 1 : blogsCarouselIndex - 1;
+    } else if (direction === 'right') {
+      blogsCarouselIndex = blogsCarouselIndex === blogsCarouselItems.length - 1 ? 0 : blogsCarouselIndex + 1;
+    }
+    
+    updateBlogsCarousel();
+  }
+  
+  function updateBlogsCarousel() {
+    if (blogsCarouselItems.length === 0) return;
+    
+    // Update carousel items
+    blogsCarouselItems.forEach((item, index) => {
+      item.classList.toggle('active', index === blogsCarouselIndex);
+    });
+    
+    // Update progress dots (for blogs carousel)
+    const blogsDetailView = document.querySelector('#blogs-detail');
+    if (blogsDetailView) {
+      const dots = blogsDetailView.querySelectorAll('.carousel-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === blogsCarouselIndex);
+      });
+    }
+    
+    console.log('Blogs carousel updated to index:', blogsCarouselIndex);
+  }
+  
+  function selectCurrentBlogsItem() {
+    if (blogsCarouselItems.length === 0) return;
+    
+    const currentItem = blogsCarouselItems[blogsCarouselIndex];
+    if (currentItem) {
+      const url = currentItem.dataset.url;
+      if (url) {
+        window.open(url, '_blank');
+        console.log('Opened blog link:', url);
+      }
+    }
+  }
+
+  // Videos carousel specific functions
+  let videosCarouselIndex = 0;
+  let videosCarouselItems = [];
+  
+  function initializeVideosCarousel(detailView) {
+    // Get carousel items
+    videosCarouselItems = Array.from(detailView.querySelectorAll('.videos-carousel-item'));
+    videosCarouselIndex = 0;
+    
+    // Hide the detail pointer for videos carousel
+    detailPointer = detailView.querySelector('.detail-view-pointer');
+    if (detailPointer) {
+      detailPointer.style.display = 'none';
+    }
+    
+    // Initialize first item as active
+    updateVideosCarousel();
+    
+    console.log('Initialized videos carousel with', videosCarouselItems.length, 'items');
+  }
+  
+  function navigateVideosCarousel(direction) {
+    if (videosCarouselItems.length === 0) return;
+    
+    if (direction === 'left') {
+      videosCarouselIndex = videosCarouselIndex === 0 ? videosCarouselItems.length - 1 : videosCarouselIndex - 1;
+    } else if (direction === 'right') {
+      videosCarouselIndex = videosCarouselIndex === videosCarouselItems.length - 1 ? 0 : videosCarouselIndex + 1;
+    }
+    
+    updateVideosCarousel();
+  }
+  
+  function updateVideosCarousel() {
+    if (videosCarouselItems.length === 0) return;
+    
+    // Update carousel items
+    videosCarouselItems.forEach((item, index) => {
+      item.classList.toggle('active', index === videosCarouselIndex);
+    });
+    
+    // Update progress dots (for videos carousel)
+    const videosDetailView = document.querySelector('#videos-detail');
+    if (videosDetailView) {
+      const dots = videosDetailView.querySelectorAll('.carousel-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === videosCarouselIndex);
+      });
+    }
+    
+    console.log('Videos carousel updated to index:', videosCarouselIndex);
+  }
+  
+  function selectCurrentVideosItem() {
+    if (videosCarouselItems.length === 0) return;
+    
+    const currentItem = videosCarouselItems[videosCarouselIndex];
+    if (currentItem) {
+      const url = currentItem.dataset.url;
+      if (url) {
+        window.open(url, '_blank');
+        console.log('Opened video link:', url);
       }
     }
   }
@@ -605,12 +784,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // Brightness Button events
   brightnessButton.addEventListener('mousedown', () => {
     console.log('Brightness button pressed');
+    if (hasStarted) toggleBrightness();
   });
   brightnessButton.addEventListener('mouseup', () => {
     console.log('Brightness button released');
   });
   brightnessButton.addEventListener('touchstart', () => {
     console.log('Brightness button touched');
+    if (hasStarted) toggleBrightness();
   });
   brightnessButton.addEventListener('touchend', () => {
     console.log('Brightness button touch ended');
