@@ -28,21 +28,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Menu navigation system
   let currentMenuIndex = 0;
+  let isDetailView = false;
   const menuItems = [];
   const contentSections = [];
   let menuPointer = null;
+  let gameContainer = null;
 
   function initializeMenu() {
     // Get menu elements
     const menuItemElements = document.querySelectorAll('.menu-item');
     const contentSectionElements = document.querySelectorAll('.content-section');
     menuPointer = document.querySelector('.menu-pointer');
+    gameContainer = document.querySelector('.game-container');
     
     // Convert NodeLists to arrays
     menuItems.length = 0;
     contentSections.length = 0;
     menuItemElements.forEach(item => menuItems.push(item));
     contentSectionElements.forEach(section => contentSections.push(section));
+    
+    // Add click listeners to menu items
+    menuItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        if (hasStarted && !isDetailView) {
+          currentMenuIndex = index;
+          showDetailView(item.dataset.section);
+        }
+      });
+    });
     
     // Set initial pointer position
     updateMenuPointer();
@@ -80,6 +93,12 @@ document.addEventListener('DOMContentLoaded', function() {
   function navigateMenu(direction) {
     if (!hasStarted || menuItems.length === 0) return;
     
+    // If in detail view, handle scrolling instead of menu navigation
+    if (isDetailView) {
+      scrollDetailView(direction);
+      return;
+    }
+    
     if (direction === 'up') {
       currentMenuIndex = currentMenuIndex === 0 ? menuItems.length - 1 : currentMenuIndex - 1;
     } else if (direction === 'down') {
@@ -87,6 +106,64 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     updateMenuPointer();
+  }
+
+  function scrollDetailView(direction) {
+    const activeDetailView = document.querySelector('.detail-view.active');
+    if (!activeDetailView) return;
+    
+    const detailContent = activeDetailView.querySelector('.detail-content');
+    if (!detailContent) return;
+    
+    const scrollAmount = 30; // pixels to scroll per button press
+    
+    if (direction === 'up') {
+      detailContent.scrollTop = Math.max(0, detailContent.scrollTop - scrollAmount);
+    } else if (direction === 'down') {
+      const maxScroll = detailContent.scrollHeight - detailContent.clientHeight;
+      detailContent.scrollTop = Math.min(maxScroll, detailContent.scrollTop + scrollAmount);
+    }
+    
+    console.log('Scrolling detail view', direction, 'to position:', detailContent.scrollTop);
+  }
+
+  function showDetailView(section) {
+    isDetailView = true;
+    gameContainer.classList.add('detail-mode');
+    
+    // Hide all detail views first
+    const detailViews = document.querySelectorAll('.detail-view');
+    detailViews.forEach(view => view.classList.remove('active'));
+    
+    // Show the selected detail view
+    const targetDetail = document.getElementById(`${section}-detail`);
+    if (targetDetail) {
+      targetDetail.classList.add('active');
+    }
+    
+    console.log('Showing detail view for:', section);
+  }
+
+  function hideDetailView() {
+    if (!isDetailView) return;
+    
+    isDetailView = false;
+    gameContainer.classList.remove('detail-mode');
+    
+    // Hide all detail views
+    const detailViews = document.querySelectorAll('.detail-view');
+    detailViews.forEach(view => view.classList.remove('active'));
+    
+    console.log('Returning to main menu');
+  }
+
+  function selectCurrentMenuItem() {
+    if (isDetailView || !hasStarted || menuItems.length === 0) return;
+    
+    const currentItem = menuItems[currentMenuIndex];
+    if (currentItem) {
+      showDetailView(currentItem.dataset.section);
+    }
   }
 
   // Function to handle GBA button clicks to start the device
@@ -230,12 +307,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // A Button events
   aButton.addEventListener('mousedown', () => {
     console.log('A button pressed');
+    if (hasStarted) selectCurrentMenuItem();
   });
   aButton.addEventListener('mouseup', () => {
     console.log('A button released');
   });
   aButton.addEventListener('touchstart', () => {
     console.log('A button touched');
+    if (hasStarted) selectCurrentMenuItem();
   });
   aButton.addEventListener('touchend', () => {
     console.log('A button touch ended');
@@ -244,12 +323,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // B Button events
   bButton.addEventListener('mousedown', () => {
     console.log('B button pressed');
+    if (hasStarted) hideDetailView();
   });
   bButton.addEventListener('mouseup', () => {
     console.log('B button released');
   });
   bButton.addEventListener('touchstart', () => {
     console.log('B button touched');
+    if (hasStarted) hideDetailView();
   });
   bButton.addEventListener('touchend', () => {
     console.log('B button touch ended');
@@ -299,9 +380,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Keyboard support for arrow keys and menu navigation
   document.addEventListener('keydown', (e) => {
-    // Any key starts the device if not started
+    // Only specific keys start the device if not started
     if (!hasStarted) {
-      handleGBAButtonStart(e);
+      const validStartKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Escape', 'b', 'B', ' '];
+      if (validStartKeys.includes(e.key)) {
+        handleGBAButtonStart(e);
+      }
       return;
     }
 
@@ -332,11 +416,15 @@ document.addEventListener('DOMContentLoaded', function() {
       case 'Enter':
         console.log('Enter pressed (A button)');
         aButton.classList.add('pressed');
+        if (hasStarted) selectCurrentMenuItem();
         e.preventDefault();
         break;
       case 'Escape':
-        console.log('Escape pressed (B button)');
+      case 'b':
+      case 'B':
+        console.log('Escape/B pressed (B button)');
         bButton.classList.add('pressed');
+        if (hasStarted) hideDetailView();
         e.preventDefault();
         break;
     }
@@ -361,6 +449,8 @@ document.addEventListener('DOMContentLoaded', function() {
         aButton.classList.remove('pressed');
         break;
       case 'Escape':
+      case 'b':
+      case 'B':
         bButton.classList.remove('pressed');
         break;
     }

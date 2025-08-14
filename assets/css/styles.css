@@ -238,6 +238,10 @@ body.boot,body{             /* boot class removed after flash */
   color: #002061;
   margin-bottom: .6rem;
   text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+  background-color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid #002061;
 }
 
 .content-section section {
@@ -250,6 +254,146 @@ section p {
   background-color: rgba(255, 255, 255, 0.7);
   padding: 3px;
   border-radius: 2px;
+}
+
+/* Detail view styles */
+.detail-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--lcd-top) 0%, var(--lcd-bot) 100%);
+  display: none;
+  z-index: 10;
+}
+
+.detail-view.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-content {
+  flex: 1;
+  padding: .6rem;
+  overflow-y: auto;
+  /* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for WebKit browsers */
+.detail-content::-webkit-scrollbar {
+  display: none;
+}
+
+.detail-content h2 {
+  font-size: .7rem;
+  color: #002061;
+  margin-bottom: .8rem;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+  text-align: center;
+  border-bottom: 1px solid #002061;
+  padding-bottom: .3rem;
+}
+
+.detail-body {
+  font-size: .5rem;
+  line-height: 1.4;
+  color: #002061;
+}
+
+.detail-body h3 {
+  font-size: .55rem;
+  margin: .6rem 0 .3rem 0;
+  color: #001a4d;
+}
+
+.detail-body h4 {
+  font-size: .5rem;
+  margin: .4rem 0 .2rem 0;
+  color: #002061;
+}
+
+.detail-body p {
+  margin-bottom: .3rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 3px;
+  border-radius: 2px;
+}
+
+.detail-body ul {
+  margin: .3rem 0 .3rem 1rem;
+}
+
+.detail-body li {
+  margin-bottom: .2rem;
+}
+
+.experience-item, .education-item, .contact-item {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: .4rem;
+  margin-bottom: .4rem;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 32, 97, 0.2);
+}
+
+.company, .school {
+  font-size: .45rem;
+  color: #4b6dd4;
+  margin: .2rem 0;
+}
+
+.skill-category {
+  margin-bottom: .5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem;
+}
+
+.skill-item {
+  background-color: #4b6dd4;
+  color: white;
+  padding: .15rem .3rem;
+  border-radius: 2px;
+  font-size: .4rem;
+  display: inline-block;
+}
+
+.back-instruction {
+  position: absolute;
+  bottom: .3rem;
+  right: .5rem;
+  font-size: .4rem;
+  color: #002061;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: .2rem .4rem;
+  border-radius: 2px;
+  border: 1px solid #002061;
+  animation: blink-instruction 2s ease-in-out infinite;
+}
+
+/* Blinking animation for back instruction */
+@keyframes blink-instruction {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Menu view state */
+.menu-view {
+  display: block;
+}
+
+.menu-view.active {
+  display: block;
+}
+
+.game-container.detail-mode .menu-view {
+  display: none;
+}
+
+.game-container.detail-mode .game-menu {
+  display: none;
 }
 
 .logo{
@@ -560,13 +704,14 @@ section p {
   color: #002061;
   text-align: center;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
-  animation: pulse 2s infinite;
-  margin-top: 1rem;
+  animation: pulse 1s infinite;
+  line-height:1rem;
+  margin-bottom: 0.5rem;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.5; }
 }
 
 .loading-logo {
@@ -574,7 +719,7 @@ section p {
   font-size: 1rem;
   color: #002061;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-top: 0.5rem;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
   letter-spacing: 0.1em;
 }
